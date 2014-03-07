@@ -1,4 +1,4 @@
-__author__ = 'Martin Jakomin'
+__author__ = 'Martin Jakomin & Mateja Rojko'
 
 import random
 from collections import defaultdict

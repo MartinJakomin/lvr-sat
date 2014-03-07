@@ -1,4 +1,4 @@
-__author__ = 'Martin Jakomin'
+__author__ = 'Martin Jakomin & Mateja Rojko'
 
 
 class Neg():
@@ -24,6 +24,9 @@ class Neg():
         elif isinstance(v, Const):
             return v.negate()
 
+    def simplify(self):
+        return self
+
 class Var():
     def __init__(self,name):
         self.name = name
@@ -35,8 +38,11 @@ class Var():
         return v[self.name]
 
     def nnf(self):
-        return self.name
-        
+        return self
+
+    def simplify(self):
+        return self
+
 
 class And():
     def __init__(self,lst):
@@ -58,6 +64,21 @@ class And():
     def nnf(self):
         return And([x.nnf() for x in self.value])
 
+    def simplify(self):
+        s = [x.simplify() for x in self.value]
+        snames = [x.simplify().__str__() for x in self.value]
+        s2 = []
+        for i,x in enumerate(s):
+            if Neg(x).nnf().__str__() in snames[i+1:]:
+                return Const(False)
+            elif isinstance(x,Const):
+                if x.value is False:
+                    return Const(False)
+            elif snames[i] not in snames[i+1:]:
+                s2.append(x)
+        return And(s2)
+
+
 class Or():
     def __init__(self,lst):
         self.value = lst
@@ -77,6 +98,20 @@ class Or():
 
     def nnf(self):
         return Or([x.nnf() for x in self.value])
+
+    def simplify(self):
+        s = [x.simplify() for x in self.value]
+        snames = [x.simplify().__str__() for x in self.value]
+        s2 = []
+        for i,x in enumerate(s):
+            if Neg(x).nnf().__str__() in snames[i+1:]:
+                return Const(True)
+            elif isinstance(x,Const):
+                if x.value is True:
+                    return Const(True)
+            elif snames[i] not in snames[i+1:]:
+                s2.append(x)
+        return Or(s2)
         
 
 class Const():
@@ -90,12 +125,15 @@ class Const():
         return self.value
 
     def nnf(self):
-        return self.value
+        return self
 
     def negate(self):
         if self.value is True:
-            return False
-        return True
+            return Const(False)
+        return Const(True)
+
+    def simplify(self):
+        return self
 
     
 
@@ -105,24 +143,15 @@ def solve(f,v):
 def nnf(f):
     return f.nnf()
 
-
-"""
-a = Var("p")
-b = Neg(a)
-
-print(b)
-
-d = Const(True)
-c = Or([a,b,d])
-print(c)
-
-print 
-print(solve(And([Var("p"),Neg(Var("p"))]),{"p":True}))
-print(solve(Neg(Or([Var("p"), And([Or([Neg(Var("p")), Var("q")]), Neg(Var("q"))])])),{"p":False, "q":True}))
-
-print
-print(nnf(Neg(And([Var("p"),Var("p"),Const(True)]))))
-print(nnf(Neg(Neg(Neg(Neg(Or([Var("p"), And([Or([Neg(Var("p")), Var("q")]), Neg(Var("q"))])])))))))
-"""
-
 #TODO: Poenostavljanje izraza
+def simplify(f):
+    f = nnf(f)
+    print f
+    return f.simplify()
+
+
+
+
+
+print simplify(Neg(And([Var("p"),Var("p"),Var("q"),Var("p"),Neg(Var("p1")),Const(True)])))
+
