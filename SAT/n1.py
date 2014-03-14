@@ -27,6 +27,7 @@ class Neg():
     def simplify(self):
         return self
 
+
 class Var():
     def __init__(self,name):
         self.name = name
@@ -135,23 +136,17 @@ class Const():
     def simplify(self):
         return self
 
-    
 
 def solve(f,v):
     return f.solve(v)
 
+
 def nnf(f):
     return f.nnf()
 
-#TODO: Poenostavljanje izraza
+
 def simplify(f):
-    f = nnf(f)
-    print f
-    return f.simplify()
+    return nnf(f).simplify()
 
 
-
-
-
-print simplify(Neg(And([Var("p"),Var("p"),Var("q"),Var("p"),Neg(Var("p1")),Const(True)])))
-
+#print simplify(Neg(And([Var("p"),Var("p"),Var("q"),Var("p"),Neg(Var("p1")),Const(True)])))
