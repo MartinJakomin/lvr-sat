@@ -1,5 +1,7 @@
 __author__ = 'Martin Jakomin & Mateja Rojko'
 
+import itertools
+
 
 class Neg():
     def __init__(self,v):
@@ -27,6 +29,10 @@ class Neg():
     def simplify(self):
         return self
 
+    def cnf(self):
+        return self
+
+
 
 class Var():
     def __init__(self,name):
@@ -44,6 +50,8 @@ class Var():
     def simplify(self):
         return self
 
+    def cnf(self):
+        return self
 
 class And():
     def __init__(self,lst):
@@ -79,6 +87,9 @@ class And():
                 s2.append(x)
         return And(s2)
 
+    def cnf(self):
+        return And([x.cnf() for x in self.value])
+
 
 class Or():
     def __init__(self,lst):
@@ -113,7 +124,28 @@ class Or():
             elif snames[i] not in snames[i+1:]:
                 s2.append(x)
         return Or(s2)
-        
+
+    def cnf(self):
+        s = [x.cnf() for x in self.value]
+        s1 = [x.value if isinstance(x, And) else [x] for x in s]
+        s2 = []
+        print "----"
+        for e in itertools.product(*s1):
+            #s2.append(Or([x for x in e]))
+            print e[0],e[1].__class__, e[1]
+            s3 = []
+            for x in e:
+                if isinstance(x, Or):
+                    print "asd"
+                    pass
+                else:
+                    s3.append(x)
+            s2.append(Or(s3))
+
+        #TODO: Debug
+        print And(s2).value
+        return And(s2)
+
 
 class Const():
     def __init__(self,c):
@@ -136,6 +168,9 @@ class Const():
     def simplify(self):
         return self
 
+    def cnf(self):
+        return self
+
 
 def solve(f,v):
     return f.solve(v)
@@ -149,4 +184,11 @@ def simplify(f):
     return nnf(f).simplify()
 
 
+def cnf(f):
+    print f
+    return nnf(f).cnf()
+
 #print simplify(Neg(And([Var("p"),Var("p"),Var("q"),Var("p"),Neg(Var("p1")),Const(True)])))
+
+
+print cnf(Or([Var("x"),And([Var("y"),Var("s"),Or([Var("g"),Var("s")])])]))
