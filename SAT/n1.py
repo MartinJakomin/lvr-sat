@@ -182,13 +182,3 @@ def nnf(f):
 
 def simplify(f):
     return nnf(f).simplify()
-
-
-def cnf(f):
-    print f
-    return nnf(f).cnf()
-
-#print simplify(Neg(And([Var("p"),Var("p"),Var("q"),Var("p"),Neg(Var("p1")),Const(True)])))
-
-
-print cnf(Or([Var("x"),And([Var("y"),Var("s"),Or([Var("g"),Var("s")])])]))
