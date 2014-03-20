@@ -45,12 +45,11 @@ def Sudoku2SAT(v):
             for k in range(j+1, 10):
                 E["v"+str(j+(i*9))+"v"+str(k+(i*9))] = 1
 
-    #print sorted(E)
-    #print len(E)
     #TODO: Stolpci in 3x3
     f = Graph2SAT(V,E,9)
     #TODO: Dodaj vrednosti
     return f
+
 
 
 # Example graph

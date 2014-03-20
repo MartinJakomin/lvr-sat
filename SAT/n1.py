@@ -33,7 +33,6 @@ class Neg():
         return self
 
 
-
 class Var():
     def __init__(self,name):
         self.name = name
@@ -52,6 +51,7 @@ class Var():
 
     def cnf(self):
         return self
+
 
 class And():
     def __init__(self,lst):
@@ -88,7 +88,7 @@ class And():
         return And(s2)
 
     def cnf(self):
-        return And([x.cnf() for x in self.value])
+        return And([x.cnf().simplify() for x in self.value])
 
 
 class Or():
@@ -126,24 +126,19 @@ class Or():
         return Or(s2)
 
     def cnf(self):
-        s = [x.cnf() for x in self.value]
+        s = [x.cnf().simplify() for x in self.value]
         s1 = [x.value if isinstance(x, And) else [x] for x in s]
         s2 = []
-        print "----"
         for e in itertools.product(*s1):
-            #s2.append(Or([x for x in e]))
-            print e[0],e[1].__class__, e[1]
             s3 = []
             for x in e:
-                if isinstance(x, Or):
-                    print "asd"
-                    pass
+                if isinstance(x,Or):
+                    s3.extend(x.value)
                 else:
                     s3.append(x)
             s2.append(Or(s3))
-
-        #TODO: Debug
-        print And(s2).value
+        if len(s2) is 1:
+            return s2[0]
         return And(s2)
 
 
@@ -182,3 +177,7 @@ def nnf(f):
 
 def simplify(f):
     return nnf(f).simplify()
+
+
+def cnf(f):
+    return nnf(f).cnf().simplify()

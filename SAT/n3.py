@@ -4,11 +4,9 @@ from n1 import *
 
 
 def cnf(f):
-    print f
-    return nnf(f).cnf()
+    return nnf(f).cnf().simplify()
 
 
-f = Neg(And([Var("p"),And([Var("p"),Var("p"),Var("q"),Var("p"),Neg(Var("p1")),Const(True)])]))
-print f
-print simplify(f)
-print cnf(f)
+print cnf(Or([Var("p"),And([Var("s"),Var("m"),Var("k"),Or([Var("l"),Var("r"),Var("n")])]),Var("u")]))
+print
+print cnf(Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")]),And([Var("q"),Var("r"),Neg(Var("s"))])]))
