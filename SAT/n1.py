@@ -13,6 +13,12 @@ class Neg():
     def solve(self,v):
         return not(self.value.solve(v))
 
+    def solve_cnf(self,v):
+        if self.value.name in v:
+            return Const(not(v[self.value.name]))
+        else:
+            return self
+
     def nnf(self):
         v = self.value
         if isinstance(v, Var):
@@ -43,6 +49,12 @@ class Var():
     def solve(self,v):
         return v[self.name]
 
+    def solve_cnf(self, v):
+        if self.name in v:
+            return Const(v[self.name])
+        else:
+            return self
+
     def nnf(self):
         return self
 
@@ -70,6 +82,9 @@ class And():
                 return False
         return True
 
+    def solve_cnf(self,v):
+        return And([x.solve_cnf(v) for x in self.value])
+
     def nnf(self):
         return And([x.nnf() for x in self.value])
 
@@ -85,6 +100,8 @@ class And():
                     return Const(False)
             elif snames[i] not in snames[i+1:]:
                 s2.append(x)
+        if len(s2) < 1:
+            return Const(True)
         return And(s2)
 
     def cnf(self):
@@ -108,6 +125,9 @@ class Or():
                 return True
         return False
 
+    def solve_cnf(self,v):
+        return Or([x.solve_cnf(v) for x in self.value])
+
     def nnf(self):
         return Or([x.nnf() for x in self.value])
 
@@ -123,6 +143,8 @@ class Or():
                     return Const(True)
             elif snames[i] not in snames[i+1:]:
                 s2.append(x)
+        if len(s2) < 1:
+            return Const(False)
         return Or(s2)
 
     def cnf(self):
