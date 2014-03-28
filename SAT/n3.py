@@ -38,13 +38,12 @@ def dpll(f):
         else:
             return False
 
-
     cs = f.value
 
 
-    while len(cs) > 1:
-        print "......"
-        print cs
+    while len(cs) > 0:
+        print "......", len(cs), "......."
+        print f
 
         xs = get_literals_dict(f)
         # Deleting of pure literals
@@ -54,19 +53,8 @@ def dpll(f):
             elif xs[x] is -1:
                 v[x] = False
 
-
-        print "."
-        print f
         f = f.solve_cnf(v)
-        print f
-        f = f.simplify()
-        print f
-        print
-
-
-        # if we have no more free variables to set
-        if len(xs) < 1:
-            return False
+        f = cnf(f)
 
         # If f is simplified to a constant
         if isinstance(f,Const):
@@ -75,9 +63,14 @@ def dpll(f):
             else:
                 return False
 
-        print "....."
-        print f
         cs = f.value
+
+        # if we have no more free variables to set
+        if len(xs) < 1:
+            return False
+
+        #TODO: Set variable ...
+
 
     return True, v
 
@@ -87,11 +80,14 @@ def dpll(f):
 
 
 f = And([Var("n"),Var("d"),Or([Var("p"),And([Var("s"),Var("m"),Var("k"),Or([Var("l"),Var("r"),Var("n")])]),Var("u"),Neg(Var("s1")),Var("k"),And([Neg(Var("s")),Neg(Var("k"))])])])
-f = Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")]),And([Var("q"),Var("r"),Neg(Var("s"))])])
-f = Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")])])
+#f = Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")]),And([Var("q"),Var("r"),Neg(Var("s"))])])
+#f = Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")])])
+
+f = And([Var("q"),Var("p"),Or([Neg(Var("q")),Var("p")])])
 
 
 print f
 print cnf(f)
+print
 print dpll(f)
 
