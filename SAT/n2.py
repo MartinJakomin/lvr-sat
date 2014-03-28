@@ -33,7 +33,7 @@ def Graph2SAT(V,E,n):
     return f
 
 
-def Sudoku2SAT(v):
+def Sudoku2SAT():
     """
     Sudoku
     """
@@ -45,28 +45,45 @@ def Sudoku2SAT(v):
             for k in range(j+1, 10):
                 E["v"+str(j+(i*9))+"v"+str(k+(i*9))] = 1
 
-    #TODO: Stolpci in 3x3
+    for i in range(9):
+        for j in range(1, 10):
+            for k in range(1, 9-i):
+                E["v"+str(j+(i*9))+"v"+str(j+k*9+(i*9))] = 1
+
+    for i in range(1, 82):
+        if i%27 < 10 and i%27 >0:
+            for j in (1, 2):
+                for k in range(3):
+                    if i%3 is 1:
+                        E["v"+str(i)+"v"+str(i+j*9+k)] = 1
+                    elif i%3 is 2:
+                        E["v"+str(i)+"v"+str(i-1+j*9+k)] = 1
+                    else:
+                        E["v"+str(i)+"v"+str(i-2+j*9+k)] = 1
+
+        elif i%27 > 9 and i%27 < 19:
+            for k in range(3):
+                if i%3 is 1:
+                    E["v"+str(i)+"v"+str(i+9+k)] = 1
+                elif i%3 is 2:
+                    E["v"+str(i)+"v"+str(i-1+9+k)] = 1
+                else:
+                    E["v"+str(i)+"v"+str(i-2+9+k)] = 1
+
+    print (sorted(E))
+    print (len(E))
+
     f = Graph2SAT(V,E,9)
     #TODO: Dodaj vrednosti
     return f
 
 
-
-# Example graph
-V = ["v1","v2","v3"]
-E = {
-    "v1v2": 1,
-    "v1v3": 0,
-    "v2v3": 1,
-}
-print Graph2SAT(V,E,3)
-
-
 #Example sudoku
-v = [[random.randint(1,9) if random.random() > 0.6 else "" for x in range(9)] for y in range(9)]
-print
-for i in v:
-    print i
-print
-print
-print Sudoku2SAT(v)
+#v = [[random.randint(1,9) if random.random() > 0.6 else "" for x in range(9)] for y in range(9)]
+#print()
+#for i in v:
+#    print (i)
+#print()
+#print()
+#print (Sudoku2SAT(v))
+Sudoku2SAT()
