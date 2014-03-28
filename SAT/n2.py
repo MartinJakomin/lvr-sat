@@ -33,7 +33,7 @@ def Graph2SAT(V,E,n):
     return f
 
 
-def Sudoku2SAT():
+def Sudoku2SAT(v):
     """
     Sudoku
     """
@@ -75,15 +75,20 @@ def Sudoku2SAT():
 
     f = Graph2SAT(V,E,9)
     #TODO: Dodaj vrednosti
-    return f
+
+    vrednosti = And([])
+
+
+    return And([f,vrednosti])
 
 
 #Example sudoku
-#v = [[random.randint(1,9) if random.random() > 0.6 else "" for x in range(9)] for y in range(9)]
-#print()
-#for i in v:
-#    print (i)
+v = [[random.randint(1,9) if random.random() > 0.6 else "" for x in range(9)] for y in range(9)]
+print()
+for i in v:
+   print (i)
 #print()
 #print()
 #print (Sudoku2SAT(v))
-Sudoku2SAT()
+print
+print Sudoku2SAT(v)
