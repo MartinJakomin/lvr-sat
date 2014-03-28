@@ -5,7 +5,7 @@ from collections import defaultdict
 from n1 import *
 
 
-def Graph2SAT(V,E,n):
+def graph2SAT(V,E,n):
     """
     n-coloring of a graph G=(V,E)
     """
@@ -33,7 +33,7 @@ def Graph2SAT(V,E,n):
     return f
 
 
-def Sudoku2SAT(v):
+def sudoku2SAT(v):
     """
     Sudoku
     """
@@ -85,12 +85,14 @@ def Sudoku2SAT(v):
     return And([f,vrednosti])
 
 
+"""
 #Example sudoku
 v = [[random.randint(1,9) if random.random() > 0.6 else "" for x in range(9)] for y in range(9)]
 for i in v:
     print i
 print
 
-x = Sudoku2SAT(v)
+x = sudoku2SAT(v)
 print x
 print cnf(x)
+"""
