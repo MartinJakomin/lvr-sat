@@ -70,20 +70,15 @@ def Sudoku2SAT(v):
                 else:
                     E["v"+str(i)+"v"+str(i-2+9+k)] = 1
 
-    #print (sorted(E))
-    #print (len(E))
-
     v_com = []
     for i in v:
-        print (i)
-    v_com = v_com + i
+        v_com = v_com + i
 
     vr = []
     for j,i in enumerate(v_com):
         if i != "":
             vr.append(Var("C"+str(j+1)+","+str(i)))     
     vrednosti = And(vr)
-    #print (vrednosti)
 
     f = Graph2SAT(V,E,9)
 
@@ -92,9 +87,10 @@ def Sudoku2SAT(v):
 
 #Example sudoku
 v = [[random.randint(1,9) if random.random() > 0.6 else "" for x in range(9)] for y in range(9)]
-print()
-    
+for i in v:
+    print i
+print
 
-#print()
-#print()
-print (Sudoku2SAT(v))
+x = Sudoku2SAT(v)
+print x
+print cnf(x)

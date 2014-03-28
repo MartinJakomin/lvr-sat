@@ -29,6 +29,7 @@ def get_literals_dict(f):
 def dpll(f):
     f = cnf(f)
     v = {}
+    xs = []
 
     # If f is simplified to a constant
     if isinstance(f,Const):
@@ -37,18 +38,15 @@ def dpll(f):
         else:
             return False
 
-    #xs = get_literals_dict(f)
+
     cs = f.value
 
-   # print xs
-    print "......"
 
-    #TODO: while cs has any, what about cs = Const ??
     while len(cs) > 1:
-
+        print "......"
         print cs
 
-        xs = get_literals_dict(f) # ??
+        xs = get_literals_dict(f)
         # Deleting of pure literals
         for x in xs.keys():
             if xs[x] is 1:
@@ -56,13 +54,13 @@ def dpll(f):
             elif xs[x] is -1:
                 v[x] = False
 
-        print f
-        print v
 
+        print "."
+        print f
         f = f.solve_cnf(v)
         print f
         f = f.simplify()
-        print f, f.__class__
+        print f
         print
 
 

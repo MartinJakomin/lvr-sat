@@ -143,7 +143,17 @@ class Or():
 
     def simplify(self):
         s = [x.simplify() for x in self.value]
-        snames = [x.simplify().__str__() for x in self.value]
+
+        # Or list flatten
+        ns = []
+        for x in s:
+            if isinstance(x,Or):
+                ns.extend(x.value)
+            else:
+                ns.append(x)
+        s = ns
+
+        snames = [x.simplify().__str__() for x in s]
         s2 = []
         for i,x in enumerate(s):
             if Neg(x).nnf().__str__() in snames[i+1:]:
