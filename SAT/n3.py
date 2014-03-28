@@ -3,28 +3,6 @@ __author__ = 'Martin Jakomin & Mateja Rojko'
 from n1 import *
 
 
-def cnf(f):
-    return nnf(f).cnf().simplify()
-
-
-#print cnf(Or([Var("p"),And([Var("s"),Var("m"),Var("k"),Or([Var("l"),Var("r"),Var("n")])]),Var("u")]))
-#print cnf(Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")]),And([Var("q"),Var("r"),Neg(Var("s"))])]))
-#print
-
-
-"""
-def get_literals(lst):
-    r = set()
-    for x in lst:
-        if isinstance(x,Var):
-            r.add(x.name)
-        elif isinstance(x,Neg):
-            r.add(x.value.name)
-        else:
-            r = r.union(get_literals(x.value))
-    return r
-"""
-
 
 def get_literals_dict(f):
     s = []
@@ -50,15 +28,25 @@ def get_literals_dict(f):
 
 def dpll(f):
     f = cnf(f)
-    cs = f.value
-    xs = get_literals_dict(f)
     v = {}
-    print xs
-    print cs
-    print "----"
+
+    # If f is simplified to a constant
+    if isinstance(f,Const):
+        if f.value is True:
+            return True, v
+        else:
+            return False
+
+    #xs = get_literals_dict(f)
+    cs = f.value
+
+   # print xs
+    print "......"
 
     #TODO: while cs has any, what about cs = Const ??
-    for i in range(1):
+    while len(cs) > 1:
+
+        print cs
 
         xs = get_literals_dict(f) # ??
         # Deleting of pure literals
@@ -66,7 +54,7 @@ def dpll(f):
             if xs[x] is 1:
                 v[x] = True
             elif xs[x] is -1:
-                v[x[1:]] = False
+                v[x] = False
 
         print f
         print v
@@ -78,9 +66,20 @@ def dpll(f):
         print
 
 
-
+        # if we have no more free variables to set
         if len(xs) < 1:
             return False
+
+        # If f is simplified to a constant
+        if isinstance(f,Const):
+            if f.value is True:
+                return True, v
+            else:
+                return False
+
+        print "....."
+        print f
+        cs = f.value
 
     return True, v
 
@@ -89,22 +88,12 @@ def dpll(f):
 
 
 
-f = Or([Var("p"),And([Var("s"),Var("m"),Var("k"),Or([Var("l"),Var("r"),Var("n")])]),Var("u")])
-f2 = Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")]),And([Var("q"),Var("r"),Neg(Var("s"))])])
+f = And([Var("n"),Var("d"),Or([Var("p"),And([Var("s"),Var("m"),Var("k"),Or([Var("l"),Var("r"),Var("n")])]),Var("u"),Neg(Var("s1")),Var("k"),And([Neg(Var("s")),Neg(Var("k"))])])])
+f = Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")]),And([Var("q"),Var("r"),Neg(Var("s"))])])
+f = Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")])])
 
-#dpll(f)
-dpll(f2)
 
-"""
-f2 = cnf(f2)
-print
-print f2
-f3 = f2.solve_cnf({"p":True, "q1": False})
-print
-print f3
-print
-print "-------"
-print f3
-print
-print simplify(f3)
-"""
+print f
+print cnf(f)
+print dpll(f)
+
