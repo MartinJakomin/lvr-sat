@@ -10,6 +10,8 @@ def graph2SAT(V,E,n):
     n-coloring of a graph G=(V,E)
     """
 
+    #TODO: Ali graph dela prav ?????
+
     f = And([Or([Var("C"+str(i)+","+str(j)) for j in range(1,n+1)]) for i in range(1,len(V)+1)])
     s = []
     for i in range(1,len(V)+1):
@@ -80,13 +82,13 @@ def sudoku2SAT(v):
             vr.append(Var("C"+str(j+1)+","+str(i)))     
     vrednosti = And(vr)
 
-    f = Graph2SAT(V,E,9)
+    f = graph2SAT(V,E,9)
 
     return And([f,vrednosti])
 
 
 """
-#Example sudoku
+# Example Sudoku
 v = [[random.randint(1,9) if random.random() > 0.6 else "" for x in range(9)] for y in range(9)]
 for i in v:
     print i
@@ -95,4 +97,16 @@ print
 x = sudoku2SAT(v)
 print x
 print cnf(x)
+"""
+
+"""
+# Example Graph
+V = ["v1","v2","v3","v4"]
+E = {
+    "v1v2": 1,
+    "v1v3": 0,
+    "v2v3": 1,
+    "v1v4": 1
+}
+f = graph2SAT(V,E,2)
 """

@@ -4,7 +4,6 @@ from n1 import *
 from n2 import *
 
 
-
 def get_literals_dict(f):
     s = []
     for x in f.value:
@@ -27,121 +26,67 @@ def get_literals_dict(f):
     return r
 
 
-"""
-def dpll(f):
+def dpll(f,v):
     f = cnf(f)
-    v = {}
-    xs = []
+    print "..."
 
     # If f is simplified to a constant
     if isinstance(f,Const):
         if f.value is True:
             return True, v
         else:
-            return False
+            return False, False
 
-    cs = f.value
-
-
-    while len(cs) > 0:
-        print "......", len(cs), "......."
-        print f
-
-        xs = get_literals_dict(f)
-        print xs
-        # Deleting of pure literals
-        for x in xs.keys():
-            if xs[x] is 1:
-                v[x] = True
-            elif xs[x] is -1:
-                v[x] = False
-
-        f = f.solve_cnf(v)
-        f = cnf(f)
-
-        # If f is simplified to a constant
-        if isinstance(f,Const):
-            if f.value is True:
-                return True, v
-            else:
-                return False
-
-        cs = f.value
-
-        # if we have no more free variables to set
-        if len(xs) < 1:
-            return False
-
-        #TODO: Set variable ...
-
-        v[xs.keys()[0]] = True
+    xs = get_literals_dict(f)
+    #cs = f.value
 
 
-    return True, v
-"""
+    # Deleting of pure literals
+    for x in xs.keys():
+        if xs[x] is 1:
+            v[x] = True
+        elif xs[x] is -1:
+            v[x] = False
 
-
-#TODO: Do Recursive
-def dpll(f):
+    f = f.solve_cnf(v)
     f = cnf(f)
-    v = {}
-    xs = []
+
+    #TODO: samostojeci literali
+    #TODO: Simplify in while loop
+
+    print len(v)
+    print
 
     # If f is simplified to a constant
     if isinstance(f,Const):
         if f.value is True:
             return True, v
         else:
-            return False
+            return False, False
 
-    cs = f.value
+    xs = get_literals_dict(f)
 
+    print v
 
-    while len(cs) > 0:
-        print "......", len(cs), "......."
-        print f
+    # Safe copy of dictionary
+    v2 = v.copy()
 
-        xs = get_literals_dict(f)
-        print xs
-        # Deleting of pure literals
-        for x in xs.keys():
-            if xs[x] is 1:
-                v[x] = True
-            elif xs[x] is -1:
-                v[x] = False
-
-        f = f.solve_cnf(v)
-        f = cnf(f)
-
-        # If f is simplified to a constant
-        if isinstance(f,Const):
-            if f.value is True:
-                return True, v
-            else:
-                return False
-
-        cs = f.value
-
-        # if we have no more free variables to set
-        if len(xs) < 1:
-            return False
-
-        #TODO: Set variable ...
-
-        v[xs.keys()[0]] = True
-
-
-    return True, v
-
-
-
-
+    #case true
+    v[xs.keys()[0]] = True
+    rec = dpll(f,v)
+    if rec[0]:
+        return rec
+    # case false
+    else:
+        v2[xs.keys()[0]] = False
+        rec2 = dpll(f,v2)
+        return rec2
 
 
 #f = And([Var("n"),Var("d"),Or([Var("p"),And([Var("s"),Var("m"),Var("k"),Or([Var("l"),Var("r"),Var("n")])]),Var("u"),Neg(Var("s1")),Var("k"),And([Neg(Var("s")),Neg(Var("k"))])])])
 #f = Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")]),And([Var("q"),Var("r"),Neg(Var("s"))])])
 #f = Or([And([Var("p"),Neg(Var("q"))]),And([Var("r"),Var("s")])])
-#f = And([Var("q"),Var("p"),Or([Neg(Var("q")),Var("p"),Neg(Var("p"))])])
+f = And([Var("q"),Var("p"),Or([Neg(Var("q")),Var("p"),Neg(Var("p"))])])
 
 
 
@@ -154,8 +99,19 @@ E = {
 }
 f = graph2SAT(V,E,2)
 
+
+"""
+v = [[random.randint(1,9) if random.random() > 0.6 else "" for x in range(9)] for y in range(9)]
+for i in v:
+    print i
+print
+
+f = sudoku2SAT(v)
+"""
+
 print f
+print len(get_literals_dict(cnf(f)))
 print cnf(f)
 print
-print dpll(f)
+print dpll(f,{})
 
