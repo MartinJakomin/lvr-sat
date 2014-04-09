@@ -35,11 +35,10 @@ def dpll(f,v):
         if f.value is True:
             return True, v
         else:
-            return False, False
+            return False, {}
 
     xs = get_literals_dict(f)
     #cs = f.value
-
 
     # Deleting of pure literals
     for x in xs.keys():
@@ -51,6 +50,7 @@ def dpll(f,v):
     f = f.solve_cnf(v)
     f = cnf(f)
 
+    #TODO: Sort clauses by length, shorter first...
     #TODO: samostojeci literali
     #TODO: Simplify in while loop
 
@@ -101,7 +101,7 @@ f = graph2SAT(V,E,2)
 
 
 """
-v = [[random.randint(1,9) if random.random() > 0.6 else "" for x in range(9)] for y in range(9)]
+v = [[random.randint(1,9) if random.random() > 0.1 else "" for x in range(9)] for y in range(9)]
 for i in v:
     print i
 print
