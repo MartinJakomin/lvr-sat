@@ -10,8 +10,6 @@ def graph2SAT(V,E,n):
     n-coloring of a graph G=(V,E)
     """
 
-    #TODO: Ali graph dela prav ?????
-
     f = And([Or([Var("C"+str(i)+","+str(j)) for j in range(1,n+1)]) for i in range(1,len(V)+1)])
     s = []
     for i in range(1,len(V)+1):
@@ -26,10 +24,8 @@ def graph2SAT(V,E,n):
             v = v1.split("v")
             i = v[1]
             j = v[2]
-            s1 = []
             for k in range(1,n+1):
-                s1.append(And([Var("C"+str(i)+","+str(k)),Var("C"+str(j)+","+str(k))]))
-            s.append(Neg(And(s1)))
+                s.append(Neg(And([Var("C"+str(i)+","+str(k)),Var("C"+str(j)+","+str(k))])))
     f.value.extend(s)
     f = And(f.value)
     return f
