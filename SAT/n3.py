@@ -6,11 +6,14 @@ from n2 import *
 
 def get_literals_dict(f):
     s = []
+    ind = []
     for x in f.value:
         if isinstance(x, Or) or isinstance(x, And):
             s.extend(x.value)
         else:
             s.append(x)
+            print x
+            ind.append(x)
     r = {}
     for x in s:
         if isinstance(x, Var):
@@ -23,6 +26,14 @@ def get_literals_dict(f):
                 r[x.value.name] = 0
             else:
                 r[x.value.name] = -1
+
+    # Independent variables
+    for x in ind:
+        if isinstance(x, Var):
+            r[x.name] = 1
+        else:
+            r[x.name] = 0
+
     return r
 
 
@@ -38,6 +49,8 @@ def dpll(f,v):
             return False, {}
 
     xs = get_literals_dict(f)
+    print "---"
+    print xs
     #cs = f.value
 
     # Deleting of pure literals
@@ -51,7 +64,6 @@ def dpll(f,v):
     f = cnf(f)
 
     #TODO: Sort clauses by length, shorter first...
-    #TODO: samostojeci literali
     #TODO: Simplify in while loop
 
     print len(v)
@@ -109,7 +121,13 @@ print
 f = sudoku2SAT(v)
 """
 
+#f = And([Var("p"),Var("s"),Or([Var("q"), Var("p"), Neg(Var("s"))])])
+
+
 print f
+print f.length()
+print [x.length() for x in cnf(f).value]
+
 print len(get_literals_dict(cnf(f)))
 print cnf(f)
 print

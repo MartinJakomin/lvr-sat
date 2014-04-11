@@ -38,6 +38,9 @@ class Neg():
     def cnf(self):
         return self
 
+    def length(self):
+        return self.value.length()
+
 
 class Var():
     def __init__(self,name):
@@ -63,6 +66,9 @@ class Var():
 
     def cnf(self):
         return self
+
+    def length(self):
+        return 1
 
 
 class And():
@@ -116,6 +122,9 @@ class And():
 
     def cnf(self):
         return And([x.cnf().simplify() for x in self.value])
+
+    def length(self):
+        return sum([x.length() for x in self.value])
 
 
 class Or():
@@ -183,6 +192,9 @@ class Or():
             return s2[0]
         return And(s2)
 
+    def length(self):
+        return sum([x.length() for x in self.value])
+
 
 class Const():
     def __init__(self,c):
@@ -207,6 +219,9 @@ class Const():
 
     def cnf(self):
         return self
+
+    def length(self):
+        return 1
 
 
 def solve(f,v):
