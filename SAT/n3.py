@@ -28,6 +28,7 @@ def get_literals_dict(f):
                 r[x.value.name] = -1
 
     # Independent variables
+    #TODO: Neg Var !!!!!!!!!!!!!!!!!
     for x in ind:
         if isinstance(x, Var):
             r[x.name] = 1
