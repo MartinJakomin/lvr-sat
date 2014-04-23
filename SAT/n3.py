@@ -28,10 +28,11 @@ def get_literals_dict(f):
                 r[x.value.name] = -1
 
     # Independent variables
-    #TODO: Neg Var !!!!!!!!!!!!!!!!!
     for x in ind:
         if isinstance(x, Var):
             r[x.name] = 1
+        elif isinstance(x, Neg):
+            r[x.value.name] = -1
         else:
             r[x.name] = 0
 
@@ -42,30 +43,39 @@ def dpll(f,v):
     f = cnf(f)
     print "..."
 
-    # If f is simplified to a constant
-    if isinstance(f,Const):
-        if f.value is True:
-            return True, v
-        else:
-            return False, {}
+    
 
-    xs = get_literals_dict(f)
-    print "---"
-    print xs
-    #cs = f.value
-
-    # Deleting of pure literals
-    for x in xs.keys():
-        if xs[x] is 1:
-            v[x] = True
-        elif xs[x] is -1:
-            v[x] = False
-
-    f = f.solve_cnf(v)
-    f = cnf(f)
-
-    #TODO: Sort clauses by length, shorter first...
     #TODO: Simplify in while loop
+    i = 0
+    xs = get_literals_dict(f)
+    print xs
+    while 1 in xs.values() or -1 in xs.values():
+        # If f is simplified to a constant
+        if isinstance(f,Const):
+            if f.value is True:
+                return True, v
+            else:
+                return False, {}
+
+        #xs = get_literals_dict(f)
+        print "---"+ str(i)
+        print xs
+        #cs = f.value
+
+        # Deleting of pure literals
+        for x in xs.keys():
+            if xs[x] is 1:
+                v[x] = True
+            elif xs[x] is -1:
+                v[x] = False
+
+        f = solve_cnf(f, v)
+        xs = get_literals_dict(f)
+        i += 1
+        #f = cnf(f)
+
+
+
 
     print len(v)
     print
@@ -75,23 +85,47 @@ def dpll(f,v):
         if f.value is True:
             return True, v
         else:
-            return False, False
+            return False, {}
 
-    xs = get_literals_dict(f)
 
     print v
+
+
+
+
+
+    #TODO: Sort clauses by length, shorter first...
+
+    f2 = sorted(f.value, key=lambda x: x.length())
+    first = f2[0]
+    first = first.value[0]
+    #TODO: take -1 or +1 for neg and var ...., Also bug: enojni literali v OR-u !!!
+
+
+    xs = get_literals_dict(f)
+    print "..,.,.,.,.,.,,"
+    print f
+    print f2
+    print And(f2)
+    print xs
+    print "chosen old: " + str(xs.keys()[0]) + " chosen new: " + str(first)
+    print "..,.,.,.,.,.,,"
+
+
 
     # Safe copy of dictionary
     v2 = v.copy()
 
     #case true
     v[xs.keys()[0]] = True
+    f = solve_cnf(f, v)
     rec = dpll(f,v)
     if rec[0]:
         return rec
     # case false
     else:
         v2[xs.keys()[0]] = False
+        f = solve_cnf(f, v2)
         rec2 = dpll(f,v2)
         return rec2
 
@@ -121,8 +155,6 @@ print
 
 f = sudoku2SAT(v)
 """
-
-#f = And([Var("p"),Var("s"),Or([Var("q"), Var("p"), Neg(Var("s"))])])
 
 
 print f

@@ -228,6 +228,10 @@ def solve(f,v):
     return f.solve(v)
 
 
+def solve_cnf(f,v):
+    return cnf(f.solve_cnf(v))
+
+
 def nnf(f):
     return f.nnf()
 
