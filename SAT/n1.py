@@ -116,8 +116,11 @@ class And():
                     return Const(False)
             elif snames[i] not in snames[i+1:]:
                 s2.append(x)
+
         if len(s2) < 1:
             return Const(True)
+        elif len(s2) is 1:
+            return s2[0]
         return And(s2)
 
     def cnf(self):
@@ -172,8 +175,11 @@ class Or():
                     return Const(True)
             elif snames[i] not in snames[i+1:]:
                 s2.append(x)
+
         if len(s2) < 1:
             return Const(False)
+        elif len(s2) is 1:
+            return s2[0]
         return Or(s2)
 
     def cnf(self):
@@ -205,6 +211,9 @@ class Const():
 
     def solve(self,v):
         return self.value
+
+    def solve_cnf(self,v):
+        return self
 
     def nnf(self):
         return self
