@@ -2,18 +2,19 @@ __author__ = "Martin Jakomin, Mateja Rojko"
 
 
 """
-Boolean operators:
-- Variable
-- Negation
+Classes for boolean operators:
+- Var
+- Neg
 - Or
 - And
-- Constant
+- Const
 
 Functions:
+- nnf
+- simplify
+- cnf
 - solve
 - solve_cnf
-- nnf
-- cnf
 """
 
 import itertools
@@ -51,6 +52,10 @@ def solve_cnf(f, v):
 
 
 class Var():
+    """
+    Variable
+    """
+
     def __init__(self, name):
         self.name = name
 
@@ -80,6 +85,10 @@ class Var():
 
 
 class Neg():
+    """
+    Negation operator
+    """
+
     def __init__(self,v):
         self.value = v
 
@@ -119,6 +128,10 @@ class Neg():
 
 
 class And():
+    """
+    And operator
+    """
+
     def __init__(self,lst):
         self.value = lst
 
@@ -176,6 +189,10 @@ class And():
 
 
 class Or():
+    """
+    Or operator
+    """
+
     def __init__(self, lst):
         self.value = lst
 
@@ -246,6 +263,10 @@ class Or():
 
 
 class Const():
+    """
+    Constant
+    """
+
     def __init__(self, c):
         self.value = c
 

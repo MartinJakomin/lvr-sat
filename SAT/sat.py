@@ -5,16 +5,16 @@ __author__ = "Martin Jakomin, Mateja Rojko"
 SAT solver based on DPLL algorithm
 
 Functions:
-- get_literals_dict
+- get_literals
 - sat
 """
 
-from bool import Var, Neg, Const, cnf, solve_cnf
+from bool import Var, Neg, And, Or, Const, cnf, solve_cnf
 
 # functions
 
 
-def get_literals_dict(f):
+def get_literals(f):
     """
     Gets a dictionary of all literals with information about their purity and independence
     """
@@ -59,9 +59,13 @@ def get_literals_dict(f):
     return r
 
 
-def sat(f,v):
+def sat(f, v):
     """
     Advanced DPLL algorithm, with while loop simplification and clause length sorting
+    Returns True and a list of variable settings if f is satisfiable, else it returns False and empty dictionary
+
+    Example call:
+    sat(And([Var("p"), Neg(Var("p"))]), {})
     """
 
     f = cnf(f)
@@ -73,7 +77,7 @@ def sat(f,v):
             return False, {}
 
     # While loop simplify
-    xs = get_literals_dict(f)
+    xs = get_literals(f)
     i = 0
     while 1 in xs.values() or -1 in xs.values():
         # Deleting of pure literals
@@ -89,7 +93,7 @@ def sat(f,v):
                 return True, v
             else:
                 return False, {}
-        xs = get_literals_dict(f)
+        xs = get_literals(f)
         i += 1
 
     # Clauses sorted by length
