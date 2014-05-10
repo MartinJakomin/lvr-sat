@@ -2,7 +2,7 @@ __author__ = "Martin Jakomin, Mateja Rojko"
 
 
 """
-Conversion of multiple problems to SAT:
+Conversion of multiple problems to Boolean expressions (for SAT solving):
 - n-coloring of a graph
 - Sudoku
 """

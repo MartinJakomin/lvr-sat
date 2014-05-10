@@ -5,7 +5,7 @@ from bool import Var, Neg, And, Or, Const, cnf, simplify_cnf, nnf, simplify, sol
 import unittest
 
 
-class SatTest(unittest.TestCase):
+class SatTests(unittest.TestCase):
     """
     Unit tests for functions:
     - nnf
