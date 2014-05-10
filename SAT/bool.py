@@ -45,7 +45,7 @@ def solve(f, v):
 
 def simplify_cnf(f, v):
     """ Simplifies the cnf form using the variable values v """
-    return cnf(f.simplify_cnf(v))
+    return cnf(f).simplify_cnf(v).simplify()
 
 
 # classes
