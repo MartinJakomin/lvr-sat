@@ -61,7 +61,7 @@ def get_literals(f):
 
 def sat(f, v):
     """
-    Advanced DPLL algorithm, with while loop simplification and clause length sorting
+    Improved DPLL algorithm, with while loop simplification and clause length sorting
     Returns True and a list of variable settings if f is satisfiable, else it returns False and empty dictionary
 
     Example call:
@@ -128,5 +128,6 @@ def sat(f, v):
         ff = simplify_cnf(f, v2)
         rec2 = sat(ff, v2)
         return rec2
+
 
 # no classes
