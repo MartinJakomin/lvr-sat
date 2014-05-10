@@ -1,7 +1,7 @@
 _author__ = 'Martin Jakomin, Mateja Rojko'
 
 from sat import sat
-from bool import Var, Neg, And, Or, Const, cnf, solve_cnf, nnf, simplify, solve
+from bool import Var, Neg, And, Or, Const, cnf, simplify_cnf, nnf, simplify, solve
 import unittest
 
 
@@ -15,7 +15,7 @@ class MyTest(unittest.TestCase):
         self.assertEqual(sat(Or([Neg(And([Var("p"), Var("q")])), And([Var("p"), Var("r")])]), {}), (True, {'q': False, 'p': False, 'r': True}))
         self.assertEqual(sat(And([And([Var("p"), Var("q")]), And([Var("p"), Neg(Var("q"))]), Var("s")]), {}), (False, {}))
         self.assertEqual(sat(And([Or([Var("p"), Var("q")]), And([Var("p"), Neg(Var("q"))]), Var("s")]), {}), (True, {'q': False, 'p': True, 's': True}))
-        #!!!!!self.assertEqual(sat(And([Or([Var("p"), Var("q")]), And([Var("p"), Neg(Var("q"))]), Var("s")]), {"p": False}), (False, {}))
+        self.assertEqual(sat(And([Or([Var("p"), Var("q")]), And([Var("p"), Neg(Var("q"))]), Var("s")]), {"p": False}), (False, {}))
 
 
     def testNnf(self):
@@ -66,16 +66,16 @@ class MyTest(unittest.TestCase):
         self.assertEqual(str(cnf(Or([Or([And([Var("p"), Var("q")]), Var("r")]), Neg(Var("q"))]))), "(p | r | ~q)")
 
 
-    def testSolve_cnf(self):
-        self.assertEqual(str(solve_cnf(And([Or([Var("p"), Var("q")]), Or([Var("p"), Var("r")])]), {"p": True, "q": False, "r": False})), "True")
-        self.assertEqual(str(solve_cnf(Or([And([Var("p"), Var("q")]), Const(False)]), {"p": True, "q": False})), "False")
-        self.assertEqual(str(solve_cnf(Or([And([Var("p"), Var("q")]), And([Var("r"), Var("q")])]), {"p": True, "q": False, "r": True})), "False")
-        #!!!  self.assertEqual(str(solve_cnf(Neg(And([And([Var("p"), Var("q")]), And([Var("r"), Var("q")])])), {"p": True, "q": False, "r": False})), "True")
-        #!!!  self.assertEqual(str(solve_cnf(Neg(Or([Var("p"), Var("q")])), {"p": True, "q": True})), "False")
-        self.assertEqual(str(solve_cnf(Or([And([Var("p"), Var("q")]), Or([Var("r"), Var("q")])]), {"p": False, "q": False, "r": True})), "True")
-        self.assertEqual(str(solve_cnf(Or([Or([And([Var("p"), Var("q")]), Var("r")]), And([Var("r"), Var("s")])]), {"p": True, "q": False, "r": False, "s": False})), "False")
-        self.assertEqual(str(solve_cnf(Or([And([Var("p"), Or([Var("q"), Var("r")])]), And([Var("r"), Var("s")])]), {"p": True, "q": False, "r": False, "s": True})), "False")
-        self.assertEqual(str(solve_cnf(Or([Or([And([Var("p"), Var("q")]), Var("r")]), Neg(Var("q"))]), {"p": False, "q": True, "r": False})), "False")
+    def testSimplify_cnf(self):
+        self.assertEqual(str(simplify_cnf(And([Or([Var("p"), Var("q")]), Or([Var("p"), Var("r")])]), {"p": True, "q": False, "r": False})), "True")
+        self.assertEqual(str(simplify_cnf(Or([And([Var("p"), Var("q")]), Const(False)]), {"p": True, "q": False})), "False")
+        self.assertEqual(str(simplify_cnf(Or([And([Var("p"), Var("q")]), And([Var("r"), Var("q")])]), {"p": True, "q": False, "r": True})), "False")
+        #self.assertEqual(str(simplify_cnf(Neg(And([And([Var("p"), Var("q")]), And([Var("r"), Var("q")])])), {"p": True, "q": False, "r": False})), "True")
+        #!!!  self.assertEqual(str(simplify_cnf(Neg(Or([Var("p"), Var("q")])), {"p": True, "q": True})), "False")
+        self.assertEqual(str(simplify_cnf(Or([And([Var("p"), Var("q")]), Or([Var("r"), Var("q")])]), {"p": False, "q": False, "r": True})), "True")
+        self.assertEqual(str(simplify_cnf(Or([Or([And([Var("p"), Var("q")]), Var("r")]), And([Var("r"), Var("s")])]), {"p": True, "q": False, "r": False, "s": False})), "False")
+        self.assertEqual(str(simplify_cnf(Or([And([Var("p"), Or([Var("q"), Var("r")])]), And([Var("r"), Var("s")])]), {"p": True, "q": False, "r": False, "s": True})), "False")
+        self.assertEqual(str(simplify_cnf(Or([Or([And([Var("p"), Var("q")]), Var("r")]), Neg(Var("q"))]), {"p": False, "q": True, "r": False})), "False")
 
 
 if __name__ == '__main__':

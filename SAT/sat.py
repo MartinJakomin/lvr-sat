@@ -9,7 +9,7 @@ Functions:
 - sat
 """
 
-from bool import Var, Neg, And, Or, Const, cnf, solve_cnf
+from bool import Var, Neg, And, Or, Const, cnf, simplify_cnf
 
 # functions
 
@@ -66,9 +66,16 @@ def sat(f, v):
 
     Example call:
     sat(And([Var("p"), Neg(Var("p"))]), {})
+    or you can set initial variables:
+    sat(And([Var("p"), Neg(Var("p"))]), {"p": False})
     """
 
-    f = cnf(f)
+    # If v is not empty, first simplify the function
+    if v:
+        f = simplify_cnf(f, v)
+    else:
+        f = cnf(f)
+
     # If f is simplified to a constant
     if isinstance(f, Const):
         if f.value is True:
@@ -86,7 +93,7 @@ def sat(f, v):
                 v[x] = True
             elif xs[x] is -1:
                 v[x] = False
-        f = solve_cnf(f, v)
+        f = simplify_cnf(f, v)
         # If f is simplified to a constant
         if isinstance(f, Const):
             if f.value is True:
@@ -111,14 +118,14 @@ def sat(f, v):
 
     # Case true
     v[first] = True
-    ft = solve_cnf(f, v)
+    ft = simplify_cnf(f, v)
     rec = sat(ft, v)
     if rec[0]:
         return rec
     # Case false
     else:
         v2[first] = False
-        ff = solve_cnf(f, v2)
+        ff = simplify_cnf(f, v2)
         rec2 = sat(ff, v2)
         return rec2
 

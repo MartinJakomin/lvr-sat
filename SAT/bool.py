@@ -14,7 +14,7 @@ Functions:
 - simplify
 - cnf
 - solve
-- solve_cnf
+- simplify_cnf
 """
 
 import itertools
@@ -43,9 +43,9 @@ def solve(f, v):
     return f.solve(v)
 
 
-def solve_cnf(f, v):
+def simplify_cnf(f, v):
     """ Simplifies the cnf form using the variable values v """
-    return cnf(f.solve_cnf(v))
+    return cnf(f.simplify_cnf(v))
 
 
 # classes
@@ -65,7 +65,7 @@ class Var():
     def solve(self, v):
         return v[self.name]
 
-    def solve_cnf(self, v):
+    def simplify_cnf(self, v):
         if self.name in v:
             return Const(v[self.name])
         else:
@@ -98,7 +98,7 @@ class Neg():
     def solve(self, v):
         return not(self.value.solve(v))
 
-    def solve_cnf(self, v):
+    def simplify_cnf(self, v):
         if self.value.name in v:
             return Const(not(v[self.value.name]))
         else:
@@ -148,8 +148,8 @@ class And():
                 return False
         return True
 
-    def solve_cnf(self, v):
-        return And([x.solve_cnf(v) for x in self.value])
+    def simplify_cnf(self, v):
+        return And([x.simplify_cnf(v) for x in self.value])
 
     def nnf(self):
         return And([x.nnf() for x in self.value])
@@ -209,8 +209,8 @@ class Or():
                 return True
         return False
 
-    def solve_cnf(self, v):
-        return Or([x.solve_cnf(v) for x in self.value])
+    def simplify_cnf(self, v):
+        return Or([x.simplify_cnf(v) for x in self.value])
 
     def nnf(self):
         return Or([x.nnf() for x in self.value])
@@ -276,7 +276,7 @@ class Const():
     def solve(self, v):
         return self.value
 
-    def solve_cnf(self, v):
+    def simplify_cnf(self, v):
         return self
 
     def nnf(self):
