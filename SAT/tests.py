@@ -51,7 +51,6 @@ class SatTests(unittest.TestCase):
         self.assertEqual(str(nnf(Neg(And([Const(False), Const(False)])))), "(True | True)")
         self.assertEqual(str(nnf(Neg(And([Const(True), Const(True)])))), "(False | False)")
         self.assertEqual(str(nnf(Neg(And([Const(True), Var("p")])))), "(False | ~p)")
-
         self.assertEqual(str(nnf(Neg(And([Neg(Or([Neg(Var("p")), Var("q")])), Neg(And([Var("q"), Const(False)]))])))), "((~p | q) | (q & False))")
 
     def test_cnf(self):
@@ -134,7 +133,6 @@ class SatTests(unittest.TestCase):
         self.assertEqual(str(simplify(Neg(And([Const(False), Const(False)])))), "True")
         self.assertEqual(str(simplify(Neg(And([Const(True), Const(True)])))), "False")
         self.assertEqual(str(simplify(Neg(And([Const(True), Var("p")])))), "~p")
-
         self.assertEqual(str(simplify(Neg(And([Neg(Or([Neg(Var("p")), Var("q")])), Neg(And([Var("q"), Const(False)]))])))), "(~p | q)")
 
     def test_simplify_cnf(self):
