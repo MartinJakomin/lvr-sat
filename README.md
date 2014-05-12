@@ -50,4 +50,4 @@ with various improvements, such as loop simplification and sorting the clauses b
     * Sudoku: For converting the solvability problem to Boolean expressions you can use the **sudoku2SAT**(_list of lists of rows_). The rows
     must be represented with a list of "" (for empty cells) and numbers (occupied cells).
 
- * **For more information see `examples.py`**
+ * **For more information see: `examples.py`.**
