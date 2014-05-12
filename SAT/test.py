@@ -18,6 +18,7 @@ class SatTests(unittest.TestCase):
     - sat
     """
 
+
     def test_nnf(self):
         self.assertEqual(str(nnf(Var("p"))), "p")
         self.assertEqual(str(nnf(Const(True))), "True")
@@ -278,7 +279,7 @@ class SatTests(unittest.TestCase):
 
 
     def test_sudoku(self):
-        # two equal numbers in the same row
+        # Two equal numbers in the same row
         sudoku = [[2, 1, 1, 3, "", "", 4, "", ""],
                   ["", "", "", 4, 6, "", "", "", 5],
                   ["", "", "", "", "", 5, 7, "", ""],
@@ -290,7 +291,7 @@ class SatTests(unittest.TestCase):
                   ["", "", "", 7, 3, "", "", 5, ""]]
         self.assertEqual(sat(sudoku2SAT(sudoku), {}), (False, {}))
 
-        # two equal numbers in the same column
+        # Two equal numbers in the same column
         sudoku = [[2, 1, "", 3, "", "", 4, "", ""],
                   ["", "", "", 4, 6, "", "", "", 5],
                   ["", "", "", "", "", 5, 7, "", ""],
@@ -302,7 +303,7 @@ class SatTests(unittest.TestCase):
                   ["", "", "", 7, 3, "", "", 5, ""]]
         self.assertEqual(sat(sudoku2SAT(sudoku), {}), (False, {}))
 
-        # two equal numbers in the same 3x3 square
+        # Two equal numbers in the same 3x3 square
         sudoku = [[2, 1, "", 3, "", "", 4, "", ""],
                     ["", "", 1, 4, 6, "", "", "", 5],
                     ["", "", "", "", "", 5, 7, "", ""],
@@ -316,30 +317,30 @@ class SatTests(unittest.TestCase):
 
 
     def test_graph2SAT(self):
-        # cyclic graph on odd number of points
+        # Cyclic graph on odd number of points
         V = ["v1", "v2", "v3"]
         E = {"v1v2": 1, "v2v3": 1, "v3v1": 1}
         self.assertEqual(sat(graph2SAT(V,E,2), {}), (False, {}))
         self.assertEqual(sat(graph2SAT(V,E,3), {}), (True, {'C2,3': False, 'C2,2': True, 'C2,1': False, 'C3,2': False, 'C3,3': True, 'C3,1': False, 'C1,1': True, 'C1,2': False, 'C1,3': False}))
 
-        # cyclic graph on even number of points
+        # Cyclic graph on even number of points
         V = ["v1", "v2", "v3", "v4"]
         E = {"v1v2": 1, "v2v3": 1, "v3v4": 1, "v4v1": 1}
         self.assertEqual(sat(graph2SAT(V,E,2), {}), (True, {'C2,2': True, 'C2,1': False, 'C4,1': False, 'C4,2': True, 'C3,2': False, 'C3,1': True, 'C1,1': True, 'C1,2': False}))
 
-        # bipartite graph
+        # Bipartite graph
         V = ["v1", "v2", "v3", "v4"]
         E = {"v1v3": 1, "v1v4": 1, "v2v4": 1}
         self.assertEqual(sat(graph2SAT(V,E,2), {}), (True, {'C2,2': False, 'C2,1': True, 'C4,1': False, 'C4,2': True, 'C3,2': True, 'C3,1': False, 'C1,1': True, 'C1,2': False}))
 
-        # complete graph
+        # Complete graph
         V = ["v1", "v2", "v3", "v4"]
         E = {"v1v2": 1, "v1v3": 1, "v1v4": 1, "v2v3": 1, "v2v4": 1, "v3v4": 1}
         self.assertEqual(sat(graph2SAT(V,E,2), {}), (False, {}))
         self.assertEqual(sat(graph2SAT(V,E,3), {}), (False, {}))
         self.assertEqual(sat(graph2SAT(V,E,4), {}), (True, {'C2,3': False, 'C2,2': True, 'C2,1': False, 'C4,1': False, 'C4,3': False, 'C4,2': False, 'C2,4': False, 'C3,2': False, 'C3,3': True, 'C3,1': False, 'C3,4': False, 'C1,1': True, 'C1,2': False, 'C1,3': False, 'C1,4': False, 'C4,4': True}))
 
-        # tree
+        # Tree
         V = ["v1", "v2", "v3", "v4", "v5"]
         E = {"v1v2": 1, "v1v3": 1, "v3v4": 1, "v3v5": 1}
         self.assertEqual(sat(graph2SAT(V,E,2), {}), (True, {'C2,2': True, 'C2,1': False, 'C4,1': True, 'C4,2': False, 'C3,2': True, 'C3,1': False, 'C1,1': True, 'C1,2': False, 'C5,1': True, 'C5,2': False}))

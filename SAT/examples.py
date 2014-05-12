@@ -65,7 +65,7 @@ sat1 = sat(And([Var("p"), Var("q")]), {})
 sat2 = sat(Neg(Or([Const(True), Const(False)])), {})
 print "SAT:", sat1, ", ", sat2
 
-# SAT - set initial values
+# SAT - with initial values
 sat3 = sat(And([Or([Var("p"), Var("q")]), And([Var("p"), Neg(Var("q"))]), Var("s")]), {"p": False})
 print "SAT - set initial values:", sat1, ", ", sat2, "\n\n"
 
@@ -86,31 +86,31 @@ sudoku = [[2, 1, "", 3, "", "", 4, "", ""],
 print "Sudoku:", sat(sudoku2SAT(sudoku), {}), "\n\n"
 
 
-### graph coloring ###
+### Graph coloring ###
 print "GRAPH COLORING"
 print "~~~~~~~~~"
 
-# cyclic graph on odd number of points
+# Cyclic graph on odd number of points
 V1 = ["v1", "v2", "v3"]
 E1 = {"v1v2": 1, "v2v3": 1, "v3v1": 1}
 print "Cyclic graph on odd number of points:", sat(graph2SAT(V1,E1,3), {})
 
-# cyclic graph on even number of points
+# Cyclic graph on even number of points
 V2 = ["v1", "v2", "v3", "v4"]
 E2 = {"v1v2": 1, "v2v3": 1, "v3v4": 1, "v4v1": 1}
 print "Cyclic graph on even number of points:", sat(graph2SAT(V2,E2,2), {})
 
-# bipartite graph
+# Bipartite graph
 V3 = ["v1", "v2", "v3", "v4"]
 E3 = {"v1v3": 1, "v1v4": 1, "v2v4": 1}
 print "Bipartite graph:", sat(graph2SAT(V3,E3,2), {})
 
-# complete graph
+# Complete graph
 V4 = ["v1", "v2", "v3", "v4"]
 E4 = {"v1v2": 1, "v1v3": 1, "v1v4": 1, "v2v3": 1, "v2v4": 1, "v3v4": 1}
 print "Complete graph:", sat(graph2SAT(V4,E4,4), {})
 
-# tree
+# Tree
 V5 = ["v1", "v2", "v3", "v4", "v5"]
 E5 = {"v1v2": 1, "v1v3": 1, "v3v4": 1, "v3v5": 1}
 print "Tree:", sat(graph2SAT(V5,E5,2), {})

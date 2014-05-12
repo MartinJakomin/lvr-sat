@@ -18,10 +18,11 @@ with various improvements, such as loop simplification and sorting the clauses b
 
 ## Project structure
  * `SAT/` contains the source code:
-   * `SAT/bool.py` contains the classes for boolean constructs (operators) and expressions, and functions for expression
+   * `SAT/bool.py` contains the classes for Boolean constructs (operators) and expressions, and functions for expression
    manipulation and simplification
    * `SAT/sat.py` contains the sat solver (modified DPLL algorithm)
    * `SAT/sat_converter.py` contains the methods for converting the graph coloring problem and Sudoku to Boolean expressions
+   * `SAT/examples.py` contains some examples for usage of Boolean constructs, expressions, functions and SAT
    * `SAT/test.py` contains te unit tests for the project
 
 
@@ -48,3 +49,5 @@ with various improvements, such as loop simplification and sorting the clauses b
     **Graph2SAT**(_list of vertices_, _dictionary of edges_,_n_).
     * Sudoku: For converting the solvability problem to Boolean expressions you can use the **sudoku2SAT**(_list of lists of rows_). The rows
     must be represented with a list of "" (for empty cells) and numbers (occupied cells).
+
+ * ** For more information see `examples.py`  **
