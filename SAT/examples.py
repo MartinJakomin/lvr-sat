@@ -8,26 +8,26 @@ from sat_converter import sudoku2SAT, graph2SAT
 print "OPERATORS"
 print "~~~~~~~~~"
 
-# Const
+# Constants - Const
 tr = Const(True)
 fl = Const(False)
 print "Constants:", tr, ",", fl
 
-# Var
+# Variable - Var
 op = Var("p")
 print "Variable:", op
 
-# Neg
+# Negation - Neg
 n = Neg("p")
 print "Negation:", n
 
-# And
+# Conjunction - And
 a1 = And([Var("p"), Var("q")])
 a2 = And([Var("p"), Var("q"), Var("r")])
 a3 = And([Var("p"), And([Var("q"), Neg(Var("r"))])])
 print "Conjunction:", a1, ", ", a2, ", ", a3
 
-# Or
+# Disjunction - Or
 o1 = Or([Var("p"), Var("q")])
 o2 = Or([Var("p"), Var("q"), Var("r")])
 o3 = Or([Var("p"), Or([Var("q"), Var("r")])])
@@ -38,13 +38,13 @@ print "Disjunction:", o1, ", ", o2, ", ", o3, "\n\n"
 print "FUNCTIONS"
 print "~~~~~~~~~"
 
-# nnf
+# Negation normal form - nnf
 nnf1 = nnf(Neg(Neg(Var("p"))))
 nnf2 = nnf(Neg(Or([Var("p"), Var("q")])))
 nnf3 = nnf(Neg(Or([Const(True), Var("p")])))
 print "Negation normal form:", nnf1, ", ", nnf2, ", ", nnf3
 
-# cnf
+# Conjunctive normal form - cnf
 cnf1 = cnf(Or([And([Var("p"), Var("q")]), Var("r")]))
 cnf2 = cnf(Neg(Or([Var("p"), Var("q")])))
 cnf3 = cnf(And([Var("p"), Or([Var("q"), And([Var("r"), Var("z")])])]))
