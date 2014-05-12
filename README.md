@@ -26,7 +26,7 @@ with various improvements, such as loop simplification and sorting the clauses b
 
 
 ## Instructions
- * **Building the expression:** By using constructs such as Var, Neg, Or, And and Const you can build any Boolean expression.
+ * **Building the expression:** By using constructs such as Var, Neg, Or, And and Const, found in `bool.py` you can build any Boolean expression.
  Variables are defined with: **Var**("Variable name"), Negation with **Neg**(_expression_), constant with **Const**(_True_/_False_),
  And clause with **And**([_List of literals or expressions_]) and similar Or clause with **Or**([_List of literals or expressions_]).
 
@@ -39,13 +39,12 @@ with various improvements, such as loop simplification and sorting the clauses b
 
  * **SAT:** For Boolean satisfiability problem (SAT) you can use the function sat() found in `sat.py`. It comes with two
  possible options: sat(_expression_, {}) or sat(_expression_, _variable setting_) if you want to set initial variables.
- The output is either (False, {}) if expression is not satisfiable or (True, v) if expression is satisfiable(where v is
+ The output is either (False, {}) if expression is not satisfiable or (True, v) if expression is satisfiable (where v is
   the dictionary of variable setting, such that expression is satisfiable under those settings).
 
- * **Conversion of known problems:** In `sat_converter.py` you can find methods for converting the n-coloring of a graph
-  problem and Sudoku solvability problem to Boolean expressions.
-    * n-coloring of a graph G=(V,E)
-    * Sudoku
-
-
-    
+ * **Conversion of known problems:** In `sat_converter.py` you can find methods for converting the n-coloring of a
+  graph problem and Sudoku solvability problem to Boolean expressions. The example calls can be found in `sat_converter.py`.
+    * n-coloring of a graph: For converting the n-coloring of a graph problem to Boolean expressions you can use the
+    **Graph2SAT**(_list of vertices_, _dictionary of edges_,_n_).
+    * Sudoku: For converting the solvability problem to Boolean expressions you can use the **sudoku2SAT**(_list of lists of rows_). The rows
+    must be represented with a list of "" (for empty cells) and numbers (occupied cells).
